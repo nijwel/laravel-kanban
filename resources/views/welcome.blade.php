@@ -4,6 +4,8 @@
     <title>{{ $board->name }} - Kanban</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
 </head>
 <body class="p-6 bg-gray-100">
 
@@ -26,7 +28,15 @@
                 <div class="task-list min-h-10" id="column-{{ $column->id }}" data-column="{{ $column->id }}">
                     @foreach ($column->tasks->sortBy('order') as $task)
                         <div class="task bg-gray-100 p-2 mb-2 rounded shadow-sm" data-id="{{ $task->id }}">
-                            {{ $task->title }}
+                            <div class="card">
+                                <div class="card-header">
+                                    <strog>{{ $task->title }}</strong>
+                                </div>
+                                <div class="card-body">
+                                    <p>{{ $task->description}}</p>
+                                </div>
+                            </div>
+                            
                         </div>
                     @endforeach
                 </div>
