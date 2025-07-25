@@ -2,103 +2,93 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\Column;
 use App\Models\Task;
+use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 
-class TaskController extends Controller
-{
+class TaskController extends Controller {
     /**
      * Display a listing of the resource.
      */
-    public function index()
-    {
+    public function index() {
         //
     }
 
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
-    {
+    public function create() {
         //
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request, Column $column)
-    {
-        $data = $request->validate([
-            'title' => 'required|string',
+    public function store( Request $request, Column $column ) {
+        $data = $request->validate( [
+            'title'       => 'required|string',
             'description' => 'nullable|string',
-            'image' => 'nullable|image',
-            'due_date' => 'nullable|date',
-            'column_id' => 'required|numeric',
-        ]);
+            'image'       => 'nullable|image',
+            'due_date'    => 'nullable|date',
+            'column_id'   => 'required|numeric',
+        ] );
 
-        if ($request->hasFile('image')) {
-            $data['image'] = $request->file('image')->store('tasks', 'public');
+        if ( $request->hasFile( 'image' ) ) {
+            $data['image'] = $request->file( 'image' )->store( 'tasks', 'public' );
         }
 
-        // $data['column_id'] = $request->id;
+        $data['slug'] = Str::slug( $data['title'] );
 
-        Task::create($data);
+        Task::create( $data );
 
         return back();
     }
 
-
-
-    public function move(Request $request, Task $task)
-    {
-        $request->validate([
+    public function move( Request $request, Task $task ) {
+        $request->validate( [
             'column_id' => 'required|exists:columns,id',
-            'order' => 'array',
-            'order.*' => 'integer'
-        ]);
+            'order'     => 'array',
+            'order.*'   => 'integer',
+        ] );
 
-        $task->update(['column_id' => $request->column_id]);
+        $task->update( ['column_id' => $request->column_id] );
 
         // Update order if list of task IDs is provided
-        if ($request->has('order')) {
-            foreach ($request->order as $index => $id) {
-                Task::where('id', $id)->update(['order' => $index]);
+        if ( $request->has( 'order' ) ) {
+            foreach ( $request->order as $index => $id ) {
+                Task::where( 'id', $id )->update( ['order' => $index] );
             }
         }
 
-        return response()->json(['success' => true]);
+        return response()->json( ['success' => true] );
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
-    {
+    public function show( string $id ) {
         //
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
-    {
+    public function edit( string $id ) {
         //
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
-    {
+    public function update( Request $request, string $id ) {
         //
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
-    {
+    public function destroy( string $id ) {
         //
     }
 }

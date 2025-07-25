@@ -2,15 +2,24 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
 use App\Models\Column;
+use App\Models\Scopes\AuthUserScope;
+use Illuminate\Database\Eloquent\Model;
 
+class Board extends Model {
 
-class Board extends Model
-{
-    public function columns()
-    {
-        return $this->hasMany(Column::class)->orderBy('order');
+    protected $fillable = [
+        'user_id',
+        'name',
+        'slug',
+    ];
+
+    protected static function booted() {
+        static::addGlobalScope( new AuthUserScope );
+    }
+
+    public function columns() {
+        return $this->hasMany( Column::class )->orderBy( 'order' );
     }
 
 }
