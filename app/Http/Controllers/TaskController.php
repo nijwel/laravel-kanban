@@ -27,15 +27,27 @@ class TaskController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request ,  Column $column)
+    public function store(Request $request, Column $column)
     {
-        $request->validate(['title' => 'required']);
-        $column->tasks()->create([
-            'title' => $request->title,
-            'description' => $request->description ?? null
+        $data = $request->validate([
+            'title' => 'required|string',
+            'description' => 'nullable|string',
+            'image' => 'nullable|image',
+            'due_date' => 'nullable|date',
+            'column_id' => 'required|numeric',
         ]);
+
+        if ($request->hasFile('image')) {
+            $data['image'] = $request->file('image')->store('tasks', 'public');
+        }
+
+        // $data['column_id'] = $request->id;
+
+        Task::create($data);
+
         return back();
     }
+
 
 
     public function move(Request $request, Task $task)

@@ -37,7 +37,7 @@ class BoardController extends Controller
     public function show(Board $board)
     {
         $board->load('columns.tasks');
-        return view('welcome', compact('board'));
+        return view('board.board2', compact('board'));
 
     }
 

@@ -12,6 +12,8 @@ class Task extends Model
         'column_id',
         'title',
         'description',
+        'image',
+        'due_date',
         'order'
     ];
 

@@ -82,6 +82,7 @@ class ColumnController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        Column::findOrFail($id)->delete();
+        return redirect()->back()->with('success', 'Column deleted successfully.');
     }
 }
