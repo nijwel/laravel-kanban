@@ -35,6 +35,30 @@ class BoardController extends Controller {
             'user_id' => auth()->id(), // optional if boards are user-owned
         ] );
 
+        $board->columns()->createMany( [
+            [
+                'name'    => 'To Do',
+                'slug'    => Str::slug( 'to do' ) . '-column-' . $board->slug,
+                'user_id' => auth()->id(),
+                'status'  => 'todo',
+                'order'   => 0,
+            ],
+            [
+                'name'    => 'In Progress',
+                'slug'    => Str::slug( 'In Progress' ) . '-column-' . $board->slug,
+                'user_id' => auth()->id(),
+                'status'  => 'inprogress',
+                'order'   => 1,
+            ],
+            [
+                'name'    => 'Completed',
+                'slug'    => Str::slug( 'completed' ) . '-column-' . $board->slug,
+                'user_id' => auth()->id(),
+                'status'  => 'completed',
+                'order'   => 2,
+            ],
+        ] );
+
         return redirect()->back()->with( 'success', 'Board created successfully!' );
     }
 
@@ -65,6 +89,8 @@ class BoardController extends Controller {
      * Remove the specified resource from storage.
      */
     public function destroy( string $id ) {
-        //
+        $board = Board::findOrFail( $id );
+        $board->delete();
+        return redirect()->back()->with( 'success', 'Board deleted successfully.' );
     }
 }

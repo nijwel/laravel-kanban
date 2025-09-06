@@ -22,4 +22,12 @@ class Board extends Model {
         return $this->hasMany( Column::class )->orderBy( 'order' );
     }
 
+    public function tasks() {
+        return $this->hasManyThrough( Task::class, Column::class );
+    }
+
+    public function user() {
+        return $this->belongsTo( User::class );
+    }
+
 }

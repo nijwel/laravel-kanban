@@ -18,7 +18,7 @@ return new class extends Migration {
             $table->text( 'description' )->nullable();
             $table->string( 'image' )->nullable();
             $table->date( 'due_date' )->nullable();
-            $table->enum( 'status', ['To Do', 'In Progress', 'Done'] )->default( 'To Do' );
+            $table->string( 'status' )->default( 'To Do' )->nullable();
             $table->foreignId( 'assignee_id' )->nullable()->constrained( 'users' )->nullOnDelete();
             $table->integer( 'order' )->default( 0 );
             $table->timestamps();

@@ -15,6 +15,7 @@ class Column extends Model {
         'slug',
         'user_id',
         'order',
+        'status',
     ];
 
     protected static function booted() {

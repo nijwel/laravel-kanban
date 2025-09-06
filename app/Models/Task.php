@@ -20,6 +20,7 @@ class Task extends Model {
         'image',
         'due_date',
         'order',
+        'status',
 
     ];
 

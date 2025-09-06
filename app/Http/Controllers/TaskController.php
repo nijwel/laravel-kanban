@@ -31,6 +31,7 @@ class TaskController extends Controller {
             'description' => 'nullable|string',
             'image'       => 'nullable|image',
             'due_date'    => 'nullable|date',
+            'status'      => 'required',
             'column_id'   => 'required|numeric',
         ] );
 
@@ -38,7 +39,8 @@ class TaskController extends Controller {
             $data['image'] = $request->file( 'image' )->store( 'tasks', 'public' );
         }
 
-        $data['slug'] = Str::slug( $data['title'] );
+        $data['slug']    = Str::slug( $data['title'] );
+        $data['user_id'] = auth()->id();
 
         Task::create( $data );
 
@@ -48,6 +50,7 @@ class TaskController extends Controller {
     public function move( Request $request, Task $task ) {
         $request->validate( [
             'column_id' => 'required|exists:columns,id',
+            'status'    => 'required',
             'order'     => 'array',
             'order.*'   => 'integer',
         ] );
@@ -57,7 +60,7 @@ class TaskController extends Controller {
         // Update order if list of task IDs is provided
         if ( $request->has( 'order' ) ) {
             foreach ( $request->order as $index => $id ) {
-                Task::where( 'id', $id )->update( ['order' => $index] );
+                Task::where( 'id', $id )->update( ['order' => $index, 'status' => strtolower( $request->status )] );
             }
         }
 
