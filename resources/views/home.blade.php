@@ -16,12 +16,12 @@
                     <div class="card-body">
                         <div class="row g-4">
                             @forelse($boards as $board)
-                                @php
+                                {{-- @php
                                     $taskCount = $board->tasks->count();
                                     $completedTasks = $board->tasks->where('status', 'completed')->count();
                                     $progress = $taskCount > 0 ? round(($completedTasks / $taskCount) * 100) : 0;
                                     $columnCount = $board->columns->count();
-                                @endphp
+                                @endphp --}}
 
                                 <div class="col-lg-3 col-md-4 col-sm-6">
                                     <div class="card h-100 shadow border-0 hover-card">
@@ -35,11 +35,12 @@
 
                                             <p class="mb-1">
                                                 <small><i class="bi bi-columns-gap"></i> Columns:
-                                                    {{ $columnCount }}</small>
+                                                    {{ column_count($board) }}</small>
                                             </p>
 
                                             <p class="mb-3">
-                                                <small><i class="bi bi-list-task"></i> Tasks: {{ $taskCount }}</small>
+                                                <small><i class="bi bi-list-task"></i> Tasks:
+                                                    {{ task_count($board) }}</small>
                                             </p>
 
                                             <p class="mb-3">
@@ -48,7 +49,7 @@
                                                 <!-- Completed Tasks -->
                                                 <div class="d-flex align-items-center text-muted">
                                                     <i class="bi bi-check-circle-fill text-success me-1"></i>
-                                                    <small><strong>{{ $completedTasks }}</strong> Completed</small>
+                                                    <small><strong>{{ completed_task($board) }}</strong> Completed</small>
                                                 </div>
 
                                                 <!-- Assignee Avatars -->
@@ -69,12 +70,12 @@
                                             <div class="mb-3">
                                                 <div class="progress" style="height: 8px;">
                                                     <div class="progress-bar bg-success" role="progressbar"
-                                                        style="width: {{ $progress }}%;"
-                                                        aria-valuenow="{{ $progress }}" aria-valuemin="0"
+                                                        style="width: {{ progress($board) }}%;"
+                                                        aria-valuenow="{{ progress($board) }}" aria-valuemin="0"
                                                         aria-valuemax="100">
                                                     </div>
                                                 </div>
-                                                <small class="text-muted">{{ $progress }}% Completed</small>
+                                                <small class="text-muted">{{ progress($board) }}% Completed</small>
                                             </div>
 
                                             <div class="mt-auto d-flex justify-content-between">
