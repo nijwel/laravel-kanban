@@ -48,10 +48,25 @@
                                 @foreach ($column->tasks->sortBy('order') as $task)
                                     <div class="kanban-card task" data-id="{{ $task->id }}">
                                         @if ($task->image)
-                                            <img src="{{ asset('storage/' . $task->image) }}" class="card-img-top"
-                                                alt="Task Image"
-                                                style="max-height: width: 100%; height: 150px; object-fit: cover;">
+                                            @php
+                                                $extension = pathinfo($task->image, PATHINFO_EXTENSION);
+                                            @endphp
+
+                                            @if (in_array(strtolower($extension), ['jpg', 'jpeg', 'png', 'gif', 'webp']))
+                                                {{-- Show Image --}}
+                                                <img src="{{ asset('storage/' . $task->image) }}" class="card-img-top"
+                                                    alt="Task Image" style="width: 100%; height: 150px; object-fit: cover;">
+                                            @elseif (in_array(strtolower($extension), ['mp4', 'webm', 'ogg', '3gp', 'wav', 'flv']))
+                                                {{-- Show Video --}}
+                                                <video class="card-img-top"
+                                                    style="width: 100%; height: 150px; object-fit: cover;" controls>
+                                                    <source src="{{ asset('storage/' . $task->image) }}"
+                                                        type="video/{{ $extension }}">
+                                                    Your browser does not support the video tag.
+                                                </video>
+                                            @endif
                                         @endif
+
                                         <div class="d-flex justify-content-between align-items-start mb-2 mt-2">
                                             <div>
                                                 <div class=" d-flex align-items-center">

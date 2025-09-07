@@ -29,7 +29,7 @@ class TaskController extends Controller {
         $data = $request->validate( [
             'title'       => 'required|string',
             'description' => 'nullable|string',
-            'image'       => 'nullable|image',
+            'image'       => 'nullable|mimes:jpeg,png,jpg,gif,svg,mp4,webm,ogg,mp3,wav,flv|max:2048',
             'due_date'    => 'nullable|date',
             'status'      => 'required',
             'column_id'   => 'required|numeric',
